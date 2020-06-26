@@ -1,0 +1,108 @@
+---
+    Description: CloudFormation template for creating an ec2 instance
+    Parameters:
+      KeyName:
+       Description: "keyPair Name"
+       Type: AWS::EC2::KeyPair::KeyName
+       ConstraintDescription: "Must be the name of an existing EC2 KeyPair"
+       Default: "KeyPairDMZ"
+      InstanceType:
+        Description: "Select one of the possible instance types"
+        Type: String
+        Default: t2.micro
+        AllowedValues:
+        - t2.micro
+        - t2.small
+        - t2.medium
+    Resources:
+      VPC:
+        Type: AWS::EC2::VPC
+        Properties:
+          CidrBlock: 172.31.0.0/16
+          EnableDnsSupport: true
+          EnableDnsHostnames: true
+          InstanceTenancy: default
+      InternetGateway:
+        Type: AWS::EC2::InternetGateway
+      VPCGatewayAttachment:
+        Type: AWS::EC2::VPCGatewayAttachment
+        Properties:
+            VpcId: !Ref VPC
+            InternetGatewayId: !Ref InternetGateway
+      SubnetA:
+        Type: AWS::EC2::Subnet
+        Properties:
+          VpcId: !Ref VPC
+          CidrBlock: 172.31.0.0/20
+          MapPublicIpOnLaunch: true
+      SubnetB:
+        Type: AWS::EC2::Subnet
+        Properties:
+          VpcId: !Ref VPC
+          CidrBlock: 172.31.16.0/20
+          MapPublicIpOnLaunch: true
+      SubnetC:
+        Type: AWS::EC2::Subnet
+        Properties:
+          VpcId: !Ref VPC
+          CidrBlock: 172.31.32.0/20
+          MapPublicIpOnLaunch: true
+      RouteTable:
+        Type: AWS::EC2::RouteTable
+        Properties:
+          VpcId: !Ref VPC
+      InternetRoute:
+        Type: AWS::EC2::Route
+        DependsOn: VPCGatewayAttachment
+        Properties:
+          DestinationCidrBlock: 0.0.0.0/0
+          GatewayId: !Ref InternetGateway
+          RouteTableId: !Ref RouteTable
+      SubnetARouteTableAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+          RouteTableId: !Ref RouteTable
+          SubnetId: !Ref SubnetA
+      SubnetBRouteTableAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+          RouteTableId: !Ref RouteTable
+          SubnetId: !Ref SubnetB
+      SubnetCRouteTableAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+          RouteTableId: !Ref RouteTable
+          SubnetId: !Ref SubnetC
+      SecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+          GroupName: "Internet Group"
+          GroupDescription: "SSH + http traffic in, all traffic out."
+          VpcId: !Ref VPC
+          SecurityGroupIngress:
+            - IpProtocol: tcp
+              FromPort: '22'
+              ToPort: '22'
+              CidrIp: 0.0.0.0/0
+            - IpProtocol: tcp
+              FromPort: 12127
+              ToPort: 12128
+              CidrIp: 0.0.0.0/0
+          SecurityGroupEgress:
+            - IpProtocol: -1
+              CidrIp: 0.0.0.0/0
+      EC2Instance:
+        Type: AWS::EC2::Instance
+        Properties:
+          ImageId: "ami-09d95fab7fff3776c"
+          InstanceType: !Ref InstanceType
+          KeyName: !Ref KeyName
+          NetworkInterfaces:
+            - GroupSet:
+                - !Ref SecurityGroup
+              SubnetId: !Ref SubnetA
+              AssociatePublicIpAddress: true
+              DeviceIndex: "0"
+              DeleteOnTermination: 'true'
+           
+      
