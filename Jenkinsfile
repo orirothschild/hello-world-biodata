@@ -26,7 +26,7 @@
 	stage('push'){
 	    steps{
 		    sh '''
-
+            ls
             echo "Current workspace is $WORKSPACE"
             ./pipeline/build/test.sh
             '''
