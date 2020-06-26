@@ -24,7 +24,10 @@
 
 	stage('push'){
 	    steps{
-		    sh './pipeline/test/test.sh'
+		    sh '''
+            echo "Current workspace is $WORKSPACE"
+            ./pipeline/test/test.sh
+            '''
         }
         
         post { 
