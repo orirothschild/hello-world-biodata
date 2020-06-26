@@ -35,17 +35,18 @@
                 '''
             }
             
-            post { 
-                always { 
-                    cleanWs()
-                }
-            }
+           
         }
         
 
     stage('Deploy'){
         steps{
              sh "aws cloudformation create-stack --stack-name bio-data-stack --template-body file://cloudformationvpc.yml --region 'us-east-1' "
+        }
+        post { 
+            always { 
+                cleanWs()
+            }
         }
     }
     
