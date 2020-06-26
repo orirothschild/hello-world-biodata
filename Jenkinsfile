@@ -13,13 +13,6 @@
                       ls
                 '''
              }
-             
-             post { 
-              always { 
-                 cleanWs()
-              }
-        }
-        
     }
          
 
