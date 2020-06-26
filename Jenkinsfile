@@ -26,29 +26,16 @@
             }
         }
         
-        stage('deploy cf'){
+        stage('Deploy'){
             steps{
-                sh '''
-                ls
-                echo "Current workspace is $WORKSPACE"
-                ./pipeline/build/test.sh
-                '''
+                sh "aws cloudformation create-stack --stack-name bio-data-stack --template-body file://cloudformationvpc.yml --region 'us-east-1' "
             }
-            
-           
-        }
-        
-
-    stage('Deploy'){
-        steps{
-             sh "aws cloudformation create-stack --stack-name bio-data-stack --template-body file://cloudformationvpc.yml --region 'us-east-1' "
-        }
-        post { 
-            always { 
-                cleanWs()
+            post { 
+                always { 
+                    cleanWs()
+                }
             }
         }
-    }
     
     }
  }
