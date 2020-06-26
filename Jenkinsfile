@@ -10,6 +10,7 @@
 	     steps {
                  sh '''
                       ./pipeline/build/build.sh
+                      ls
                 '''
              }
              
