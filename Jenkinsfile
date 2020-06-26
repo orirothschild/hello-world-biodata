@@ -8,21 +8,14 @@
     stages {
         stage('Build'){
             steps{
-                sh '''
-                    ./pipeline/build/build.sh
-                    ls
-                '''
+                sh './pipeline/build/build.sh'
             }
         }
          
 
         stage('push'){
             steps{
-                sh '''
-                ls
-                echo "Current workspace is $WORKSPACE"
-                ./pipeline/build/test.sh
-                '''
+                sh './pipeline/build/test.sh'
             }
         }
         
