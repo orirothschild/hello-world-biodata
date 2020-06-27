@@ -82,7 +82,7 @@
               AssociatePublicIpAddress: true
               DeviceIndex: "0"
               DeleteOnTermination: 'true'
-           UserData: !Base64 |
+          UserData: !Base64 |
             #!/bin/bash
             apt-get update -qq
             apt-get install -y apt-transport-https ca-certificates
