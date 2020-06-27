@@ -1,24 +1,28 @@
 ---
+  # author : Ori Rothschild
+  # as to practice and understand cloudformation' i reffered from using a built template
+  # however i did use ec2 create instance snippet as awell as routetable snippets
+  
     Description: CloudFormation template for creating an ec2 instance
     Parameters:
-      KeyName:
+      KeyName: 
        Description: "keyPair Name"
        Type: AWS::EC2::KeyPair::KeyName
        ConstraintDescription: "Must be the name of an existing EC2 KeyPair"
-       Default: "KeyPairDMZ"
+       Default: "KeyPairDMZ" 
       InstanceType:
         Description: "Select one of the possible instance types"
         Type: String
         Default: t2.micro
         AllowedValues:
-        - t2.micro
+        - t2.micro   # i will be using this one as its still in free tier 
         - t2.small
         - t2.medium
     Resources:
       VPC:
         Type: AWS::EC2::VPC
         Properties:
-          CidrBlock: 172.31.0.0/24
+          CidrBlock: 172.31.0.0/24     # 8 bits of ip adresses our open for use 0-256
           EnableDnsSupport: true
           EnableDnsHostnames: true
           InstanceTenancy: default
@@ -33,13 +37,13 @@
         Type: AWS::EC2::Subnet
         Properties:
           VpcId: !Ref VPC
-          CidrBlock: 172.31.0.0/25
+          CidrBlock: 172.31.0.0/25  # 7 bits of ip adresses our open for our usement 0-128
           MapPublicIpOnLaunch: true
       SubnetB:
         Type: AWS::EC2::Subnet
         Properties:
           VpcId: !Ref VPC
-          CidrBlock: 172.31.0.128/25
+          CidrBlock: 172.31.0.128/25 # 7 bits of ip adresses our open for our usement 129-255
           MapPublicIpOnLaunch: true
       RouteTable:
         Type: AWS::EC2::RouteTable
@@ -66,7 +70,7 @@
         Type: AWS::EC2::SecurityGroup
         Properties:
           GroupName: "Internet Group"
-          GroupDescription: "SSH + http traffic in, all traffic out."
+          GroupDescription: "SSH + http (2 adresses only) traffic in, all traffic out."
           VpcId: !Ref VPC
           SecurityGroupIngress:
             - IpProtocol: tcp
@@ -97,7 +101,7 @@
               AssociatePublicIpAddress: true
               DeviceIndex: "0"
               DeleteOnTermination: 'true'
-          UserData: !Base64 |
+          UserData: !Base64 |  #install docker and docker-compose
             #!/bin/bash
             sudo amazon-linux-extras install docker
             sudo service docker start
