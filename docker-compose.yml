@@ -7,14 +7,10 @@ services:
       #location of the dockerfile and where file will be located 
       context: ./docker-ruby-hello-world
     ports:
-      #dont let annnny node modules inside the folder to overrite the one inside a container
       - '12127:8080'
   api_howdy_world:
     build:
-        #only specify the dockerfile name
       dockerfile: Dockerfile
-      #location of the dockerfile and where file will be located 
       context: ./docker-ruby-howdy-world
     ports:
-      #dont let anny node modules inside the folder to overrite the one inside a container
       - '12128:8080'  
