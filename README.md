@@ -1,4 +1,4 @@
-  as to practice and understand cloudformation' i reffered from using a built template
+  as to practice and understand cloudformation, i reffered from using a built template
   however i did use ec2 create instance snippet as awell as routetable snippets
 
   this project consists of the following:
