@@ -39,7 +39,7 @@
         Type: AWS::EC2::Subnet
         Properties:
           VpcId: !Ref VPC
-          CidrBlock: 172.31.16.128/25
+          CidrBlock: 172.31.0.128/25
           MapPublicIpOnLaunch: true
       RouteTable:
         Type: AWS::EC2::RouteTable
