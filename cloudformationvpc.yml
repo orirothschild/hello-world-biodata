@@ -33,7 +33,13 @@
         Type: AWS::EC2::Subnet
         Properties:
           VpcId: !Ref VPC
-          CidrBlock: 172.31.0.0/30
+          CidrBlock: 172.31.0.0/25
+          MapPublicIpOnLaunch: true
+      SubnetB:
+        Type: AWS::EC2::Subnet
+        Properties:
+          VpcId: !Ref VPC
+          CidrBlock: 172.31.16.128/25
           MapPublicIpOnLaunch: true
       RouteTable:
         Type: AWS::EC2::RouteTable
@@ -51,6 +57,11 @@
         Properties:
           RouteTableId: !Ref RouteTable
           SubnetId: !Ref SubnetA
+      SubnetBRouteTableAssociation:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+          RouteTableId: !Ref RouteTable
+          SubnetId: !Ref SubnetB
       SecurityGroup:
         Type: AWS::EC2::SecurityGroup
         Properties:
