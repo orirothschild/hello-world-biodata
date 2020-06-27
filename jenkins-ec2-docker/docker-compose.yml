@@ -1,7 +1,7 @@
 version: '2.0'
 
 services:
-  # Jenkins
+  # Jenkinns
   #https://jenkins.io/
   jenkins:
      build:
