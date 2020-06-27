@@ -64,6 +64,10 @@
               CidrIp: 0.0.0.0/0
             - IpProtocol: tcp
               FromPort: 12127
+              ToPort: 12127
+              CidrIp: 0.0.0.0/0
+            - IpProtocol: tcp
+              FromPort: 12128
               ToPort: 12128
               CidrIp: 0.0.0.0/0
           SecurityGroupEgress:
