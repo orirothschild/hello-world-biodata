@@ -18,7 +18,7 @@
       VPC:
         Type: AWS::EC2::VPC
         Properties:
-          CidrBlock: 172.31.0.0/16
+          CidrBlock: 172.31.0.0/24
           EnableDnsSupport: true
           EnableDnsHostnames: true
           InstanceTenancy: default
@@ -33,7 +33,7 @@
         Type: AWS::EC2::Subnet
         Properties:
           VpcId: !Ref VPC
-          CidrBlock: 172.31.0.0/20
+          CidrBlock: 172.31.0.0/30
           MapPublicIpOnLaunch: true
       RouteTable:
         Type: AWS::EC2::RouteTable
