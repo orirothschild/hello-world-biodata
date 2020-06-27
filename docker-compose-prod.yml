@@ -1,0 +1,12 @@
+version : '3.7'
+services:
+  api_hello_world:
+    image: orirothschild/hello-world
+    ports:
+      #dont let anny node modules inside the folder to overrite the one inside a container
+      - '12127:8080'
+  api_howdy_world:
+    image: orirothschild/howdy-world
+    ports:
+      #dont let anny node modules inside the folder to overrite the one inside a container
+      - '12128:8080'  
